@@ -11,10 +11,10 @@ public class Bill implements Serializable{
 
     private int id;
     private int uid;                 //用户Id
-    private String type;             //收支类型
+    private String type;             //收支类型 10
     private double money;            //收或支多少钱.
-    private String folder;           //所属的文件夹
-    private String remark;           //备注
+    private String folder;           //所属的文件夹 50
+    private String remark;           //备注 300
     private Date billDate;           //账单时间,并非创建时间,由用户指定
 
 
