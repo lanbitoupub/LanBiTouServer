@@ -12,6 +12,7 @@ public interface BillRepository {
 
     /**
      * 加一个Bill
+     * 其中的billDate要提前设置好,虽然数据库可以自动生成,但没有必要再写个sql语句了
      * @param bill
      */
     public void addOne(Bill bill);

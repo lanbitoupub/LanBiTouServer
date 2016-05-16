@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public class BillJdbcRepository implements BillRepository{
 
+    private static String INSERT_ONE_BILL = "insert into bills (uid, type, money, folder, remark, bill_date) values (?,?,?,?,?,?)";
+
     private JdbcOperations jdbcOperations;
 
     /**
@@ -28,7 +30,13 @@ public class BillJdbcRepository implements BillRepository{
 
     @Override
     public void addOne(Bill bill) {
-
+        jdbcOperations.update(INSERT_ONE_BILL,
+                            bill.getUid(),
+                            bill.getType(),
+                            bill.getMoney(),
+                            bill.getFolder(),
+                            bill.getRemark(),
+                            bill.getBillDate());
     }
 
     @Override
