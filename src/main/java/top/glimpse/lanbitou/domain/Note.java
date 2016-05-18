@@ -1,5 +1,6 @@
 package top.glimpse.lanbitou.domain;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -10,18 +11,24 @@ public class Note {
     private int uid;
     private String title;
     private String content;
+    private Boolean mark;
     private String notebook;
-    private Date created_at;
+    private String created_at;
 
     public Note() {
         super();
     }
 
-    public Note(int nid, int uid, String title, String content, String notebook, Date created_at) {
+    public Note(String title) {
+        this(0, 0, title, null, null, null, null);
+    }
+
+    public Note(int nid, int uid, String title, String content, Boolean mark, String notebook, String created_at) {
         this.nid = nid;
         this.uid = uid;
         this.title = title;
         this.content = content;
+        this.mark = mark;
         this.notebook = notebook;
         this.created_at = created_at;
     }
@@ -58,6 +65,15 @@ public class Note {
         this.content = content;
     }
 
+    public Boolean getMark() {
+        return mark;
+    }
+
+    public void setMark(Boolean mark) {
+        this.mark = mark;
+    }
+
+
     public String getNotebook() {
         return notebook;
     }
@@ -66,11 +82,11 @@ public class Note {
         this.notebook = notebook;
     }
 
-    public Date getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 

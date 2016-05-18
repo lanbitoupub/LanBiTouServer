@@ -9,7 +9,9 @@ import top.glimpse.lanbitou.domain.Note;
 import javax.inject.Inject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by joyce on 16-5-11.
@@ -18,6 +20,8 @@ import java.util.Date;
 public class NoteJdbcRepository implements NoteRepository{
 
     private static final String SELECT_NOTE_BY_ID = "select * from note where nid = ?";
+    private static final String SELECT_NOTE = "select * from note";
+    private static final String INSERT_NOTE = "insert into note(uid, title, content, mark, notebook, created_at) values(?, ?, ?, ?, ?, ?)";
     private JdbcOperations jdbcOperations;
 
     @Autowired
@@ -32,11 +36,35 @@ public class NoteJdbcRepository implements NoteRepository{
     }
 
     @Override
+    public boolean updateNote(Note note) {
+        return false;
+    }
+
+    @Override
     public Note get(int id) {
         return jdbcOperations.queryForObject(
                 SELECT_NOTE_BY_ID,
                 new NoteRowMapper(), id);
     }
+
+    @Override
+    public List<Note> getAll() {
+        return jdbcOperations.query(
+                SELECT_NOTE,
+                new NoteRowMapper());
+    }
+
+    @Override
+    public void postOne(Note note) {
+         jdbcOperations.update(INSERT_NOTE,
+                note.getUid(),
+                note.getTitle(),
+                note.getContent(),
+                note.getMark(),
+                note.getNotebook(),
+                new Timestamp(System.currentTimeMillis()).toString());
+    }
+
 
     private static class NoteRowMapper implements RowMapper<Note> {
         public Note mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -45,8 +73,9 @@ public class NoteJdbcRepository implements NoteRepository{
                     rs.getInt("uid"),
                     rs.getString("title"),
                     rs.getString("content"),
+                    rs.getBoolean("mark"),
                     rs.getString("notebook"),
-                    rs.getDate("created_at"));
+                    rs.getString("created_at"));
         }
     }
 
