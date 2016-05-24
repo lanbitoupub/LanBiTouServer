@@ -2,9 +2,12 @@ package top.glimpse.lanbitou.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import top.glimpse.lanbitou.domain.Bill;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -13,8 +16,10 @@ import java.util.List;
 @Repository
 public class BillJdbcRepository implements BillRepository{
 
-    private static String INSERT_ONE_BILL = "insert into bills (uid, type, money, folder, remark, bill_date) values (?,?,?,?,?,?)";
-
+    private final static String INSERT_ONE_BILL = "insert into bills (uid, type, money, folder, remark, bill_date) values (?,?,?,?,?,?)";
+    private final static String FIND_ONE_BY_ID = "select * from bills where id = ?";
+    private final static String FIND_SOME_BY_FOLDER = "select * from bills where uid = ? and folder = ?";
+    private final static String DELETE_BY_ID = "delete from bills where id = ?";
     private JdbcOperations jdbcOperations;
 
     /**
@@ -22,6 +27,7 @@ public class BillJdbcRepository implements BillRepository{
      * @param jdbcOperations
      */
     @Autowired
+
     public BillJdbcRepository(JdbcOperations jdbcOperations){
         this.jdbcOperations = jdbcOperations;
     }
@@ -46,7 +52,7 @@ public class BillJdbcRepository implements BillRepository{
 
     @Override
     public Bill getOneById(int id) {
-        return null;
+        return jdbcOperations.queryForObject(FIND_ONE_BY_ID,new BillRowMapper(),id);
     }
 
     @Override
@@ -55,13 +61,13 @@ public class BillJdbcRepository implements BillRepository{
     }
 
     @Override
-    public List<Bill> getSomeByFolder(String folderName) {
-        return null;
+    public List<Bill> getSomeByFolder(int uid, String folderName) {
+        return jdbcOperations.query(FIND_SOME_BY_FOLDER,new BillRowMapper(),uid ,folderName);
     }
 
     @Override
     public void deleteById(int id) {
-
+        jdbcOperations.update(DELETE_BY_ID,id);
     }
 
     @Override
@@ -72,5 +78,21 @@ public class BillJdbcRepository implements BillRepository{
     @Override
     public void update(Bill bill) {
 
+    }
+
+    private class BillRowMapper implements RowMapper<Bill>{
+
+        @Override
+        public Bill mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Bill b = new Bill();
+            b.setId(rs.getInt("id"));
+            b.setUid(rs.getInt("uid"));
+            b.setType(rs.getString("type"));
+            b.setMoney(rs.getDouble("money"));
+            b.setFolder(rs.getString("folder"));
+            b.setRemark(rs.getString("remark"));
+            b.setBillDate(rs.getString("bill_date"));
+            return b;
+        }
     }
 }

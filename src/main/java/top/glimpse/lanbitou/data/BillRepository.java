@@ -23,7 +23,6 @@ public interface BillRepository {
      */
     public void addSome(List<Bill> billList);
 
-
     /**
      * 通过id获得bill
      * @param id bill id
@@ -42,14 +41,13 @@ public interface BillRepository {
      * @param folderName
      * @return
      */
-    public List<Bill> getSomeByFolder(String folderName);
+    public List<Bill> getSomeByFolder(int id, String folderName);
 
     /**
      * 删除相应id的账单
      * @param id
      */
     public void deleteById(int id);
-
 
     /**
      * 删除
