@@ -15,7 +15,7 @@ public class Bill implements Serializable{
     private double money;            //收或支多少钱.
     private String folder;           //所属的文件夹 50
     private String remark;           //备注 300
-    private Date billDate;           //账单时间,并非创建时间,由用户指定
+    private String billDate;           //账单时间,并非创建时间,由用户指定
 
 
     public int getId() {
@@ -50,11 +50,11 @@ public class Bill implements Serializable{
         this.money = money;
     }
 
-    public void setBillDate(Date billDate) {
+    public void setBillDate(String billDate) {
         this.billDate = billDate;
     }
 
-    public Date getBillDate() {
+    public String getBillDate() {
         return billDate;
     }
 
