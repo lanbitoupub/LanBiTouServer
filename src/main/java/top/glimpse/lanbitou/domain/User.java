@@ -11,13 +11,13 @@ public class User {
     private String password;
     private String avatar;
     private String email;
-    private Date created_at;
+    private String created_at;
 
     public User() {
         super();
     }
 
-    public User(int uid, String name, String password, String avatar, String email, Date created_at) {
+    public User(int uid, String name, String password, String avatar, String email, String created_at) {
         this.uid = uid;
         this.name = name;
         this.password = password;
@@ -66,11 +66,11 @@ public class User {
         this.email = email;
     }
 
-    public Date getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 }

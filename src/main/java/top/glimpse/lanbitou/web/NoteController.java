@@ -41,6 +41,45 @@ public class NoteController {
     @ResponseBody
     public String postOne(@RequestBody Note note) {
         noteRepository.postOne(note);
-        return "posted";
+        return "postOne";
     }
+
+    @RequestMapping(value = "/postAll", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String postAll(@RequestBody List<Note> noteList) {
+        noteRepository.postAll(noteList);
+        return "postAll";
+    }
+
+
+
+    @RequestMapping(value = "/updateOne", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateOne(@RequestBody Note note) {
+        noteRepository.updateOne(note);
+        return "updateOne";
+    }
+
+    @RequestMapping(value = "/updateAll", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateAll(@RequestBody List<Note> noteList) {
+        noteRepository.updateAll(noteList);
+        return "updateAll";
+    }
+
+    @RequestMapping(value = "/deleteOne", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteOne(@RequestBody Note note) {
+        noteRepository.deleteOne(note);
+        return "deleteOne";
+    }
+
+    @RequestMapping(value = "/deleteAll", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteAll(@RequestBody List<Note> noteList) {
+        noteRepository.deleteAll(noteList);
+        return "deleteAll";
+    }
+
+
 }

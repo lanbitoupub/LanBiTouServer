@@ -2,11 +2,13 @@ package top.glimpse.lanbitou.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import top.glimpse.lanbitou.domain.Note;
 
 import javax.inject.Inject;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -21,7 +23,10 @@ public class NoteJdbcRepository implements NoteRepository{
 
     private static final String SELECT_NOTE_BY_ID = "select * from note where nid = ?";
     private static final String SELECT_NOTE = "select * from note";
-    private static final String INSERT_NOTE = "insert into note(uid, title, content, mark, notebook, created_at) values(?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_NOTE = "insert into note(uid, bid, title, content, mark, created_at) values(?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_NOTE = "update note set bid = ?, title = ?, content = ?, mark = ? where nid = ?";
+    private static final String DELETE_NOTE = "delete from note where nid = ?";
+
     private JdbcOperations jdbcOperations;
 
     @Autowired
@@ -29,16 +34,6 @@ public class NoteJdbcRepository implements NoteRepository{
         this.jdbcOperations = jdbcOperations;
     }
 
-
-    @Override
-    public boolean addNote(Note note) {
-        return false;
-    }
-
-    @Override
-    public boolean updateNote(Note note) {
-        return false;
-    }
 
     @Override
     public Note get(int id) {
@@ -58,25 +53,66 @@ public class NoteJdbcRepository implements NoteRepository{
     public void postOne(Note note) {
          jdbcOperations.update(INSERT_NOTE,
                 note.getUid(),
+                note.getBid(),
                 note.getTitle(),
                 note.getContent(),
                 note.getMark(),
-                note.getNotebook(),
                 new Timestamp(System.currentTimeMillis()).toString());
     }
 
+    @Override
+    public void postAll(List<Note> notelist) {
+        for (Note note : notelist) {
+            postOne(note);
+        }
+    }
+
+
+    @Override
+    public void updateOne(final Note note) {
+        jdbcOperations.update(UPDATE_NOTE,
+                new PreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps) throws SQLException {
+                        ps.setInt(1, note.getBid());
+                        ps.setString(2, note.getTitle());
+                        ps.setString(3, note.getContent());
+                        ps.setBoolean(4, note.getMark());
+                        ps.setInt(5, note.getNid());
+                    }
+                });
+    }
+
+    @Override
+    public void updateAll(List<Note> notelist) {
+        for(Note note : notelist) {
+            updateOne(note);
+        }
+    }
+
+    @Override
+    public void deleteOne(Note note) {
+        jdbcOperations.update(DELETE_NOTE,
+                note.getNid());
+    }
+
+    @Override
+    public void deleteAll(List<Note> notelist) {
+        for (Note note : notelist) {
+            deleteOne(note);
+        }
+    }
 
     private static class NoteRowMapper implements RowMapper<Note> {
         public Note mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Note(
                     rs.getInt("nid"),
                     rs.getInt("uid"),
+                    rs.getInt("bid"),
                     rs.getString("title"),
                     rs.getString("content"),
                     rs.getBoolean("mark"),
-                    rs.getString("notebook"),
                     rs.getString("created_at"));
         }
     }
-
 }

@@ -9,10 +9,10 @@ import java.util.Date;
 public class Note {
     private int nid;
     private int uid;
+    private int bid;
     private String title;
     private String content;
     private Boolean mark;
-    private String notebook;
     private String created_at;
 
     public Note() {
@@ -20,16 +20,16 @@ public class Note {
     }
 
     public Note(String title) {
-        this(0, 0, title, null, null, null, null);
+        this(0, 0, 0, title, null, null, null);
     }
 
-    public Note(int nid, int uid, String title, String content, Boolean mark, String notebook, String created_at) {
+    public Note(int nid, int uid, int bid, String title, String content, Boolean mark, String created_at) {
         this.nid = nid;
         this.uid = uid;
+        this.bid = bid;
         this.title = title;
         this.content = content;
         this.mark = mark;
-        this.notebook = notebook;
         this.created_at = created_at;
     }
 
@@ -47,6 +47,14 @@ public class Note {
 
     public void setUid(int uid) {
         this.uid = uid;
+    }
+
+    public int getBid() {
+        return bid;
+    }
+
+    public void setBid(int bid) {
+        this.bid = bid;
     }
 
     public String getTitle() {
@@ -71,15 +79,6 @@ public class Note {
 
     public void setMark(Boolean mark) {
         this.mark = mark;
-    }
-
-
-    public String getNotebook() {
-        return notebook;
-    }
-
-    public void setNotebook(String notebook) {
-        this.notebook = notebook;
     }
 
     public String getCreated_at() {
