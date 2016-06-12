@@ -16,6 +16,7 @@ public class Bill implements Serializable{
     private String folder;           //所属的文件夹 50
     private String remark;           //备注 300
     private String billDate;           //账单时间,并非创建时间,由用户指定
+    private boolean inClouded;        //是否同步
 
 
     public int getId() {
@@ -72,5 +73,13 @@ public class Bill implements Serializable{
 
     public void setFolder(String folder) {
         this.folder = folder;
+    }
+
+    public boolean isInClouded() {
+        return inClouded;
+    }
+
+    public void setInClouded(boolean inClouded) {
+        this.inClouded = inClouded;
     }
 }
