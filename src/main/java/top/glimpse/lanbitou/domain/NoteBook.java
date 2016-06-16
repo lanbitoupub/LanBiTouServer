@@ -1,20 +1,24 @@
 package top.glimpse.lanbitou.domain;
 
 /**
- * Created by joyce on 16-5-24.
+ * Created by joyce on 16-6-8.
  */
 public class NoteBook {
 
     private int bid;
     private int uid;
     private String name;
+    private int fid;
 
+    public NoteBook() {}
 
-    public NoteBook(int bid, int uid, String name) {
+    public NoteBook(int bid, int uid, String name, int fid) {
         this.bid = bid;
         this.uid = uid;
         this.name = name;
+        this.fid = fid;
     }
+
 
     public int getBid() {
         return bid;
@@ -39,4 +43,14 @@ public class NoteBook {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getFid() {
+        return fid;
+    }
+
+    public void setFid(int fid) {
+        this.fid = fid;
+    }
+
+
 }

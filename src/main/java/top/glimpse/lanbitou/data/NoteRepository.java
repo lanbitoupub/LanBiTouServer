@@ -10,7 +10,8 @@ import java.util.List;
 public interface NoteRepository {
     Note get(int id);
     List<Note> getAll();
-    void postOne(Note note);
+    List<Note> getSome(int bid);
+    int postOne(Note note);
     void updateOne(Note note);
     void updateAll(List<Note> notelist);
     void deleteAll(List<Note> notelist);

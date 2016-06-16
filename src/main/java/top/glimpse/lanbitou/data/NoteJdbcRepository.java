@@ -23,6 +23,8 @@ public class NoteJdbcRepository implements NoteRepository{
 
     private static final String SELECT_NOTE_BY_ID = "select * from note where nid = ?";
     private static final String SELECT_NOTE = "select * from note";
+    private static final String SELECT_NOTE_NEWEST_ID = "select nid from note order by nid desc limit 1";
+    private static final String SELECT_SOME_NOTE = "select * from note where bid = ?";
     private static final String INSERT_NOTE = "insert into note(uid, bid, title, content, mark, created_at) values(?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_NOTE = "update note set bid = ?, title = ?, content = ?, mark = ? where nid = ?";
     private static final String DELETE_NOTE = "delete from note where nid = ?";
@@ -50,7 +52,14 @@ public class NoteJdbcRepository implements NoteRepository{
     }
 
     @Override
-    public void postOne(Note note) {
+    public List<Note> getSome(int bid) {
+        return jdbcOperations.query(
+                SELECT_SOME_NOTE,
+                new NoteRowMapper(), bid);
+    }
+
+    @Override
+    public int postOne(Note note) {
          jdbcOperations.update(INSERT_NOTE,
                 note.getUid(),
                 note.getBid(),
@@ -58,6 +67,12 @@ public class NoteJdbcRepository implements NoteRepository{
                 note.getContent(),
                 note.getMark(),
                 new Timestamp(System.currentTimeMillis()).toString());
+
+
+        return jdbcOperations.queryForObject(
+                SELECT_NOTE_NEWEST_ID,
+                Integer.class);
+
     }
 
     @Override

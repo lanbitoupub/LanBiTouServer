@@ -37,11 +37,17 @@ public class NoteController {
         return noteRepository.getAll();
     }
 
+    @RequestMapping(value = "/getSome/{bid}", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public List<Note> getSome(@PathVariable int bid) {
+        return noteRepository.getSome(bid);
+    }
+
     @RequestMapping(value = "/postOne", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String postOne(@RequestBody Note note) {
-        noteRepository.postOne(note);
-        return "postOne";
+        int nid = noteRepository.postOne(note);
+        return "postOne" + nid;
     }
 
     @RequestMapping(value = "/postAll", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
